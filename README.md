@@ -30,5 +30,5 @@ Start mysql using
 ```
 sudo systemctl start mysqld
 ```
-Check /var/log/mysqld.log for temporary root password </p>
+Check /var/log/mysqld.log for temporary root password </br>
 Login to MySQL and change root password to Root#123. 
