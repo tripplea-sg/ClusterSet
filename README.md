@@ -46,3 +46,17 @@ mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clustera-03:3306 
 
 mysqlsh gradmin@localhost:3306 -- cluster create-cluster-set clusterset
 ```
+## Add 2nd cluster
+```
+mysqlsh gradmin@localhost:3306 -- clusterset createReplicaCluster gradmin@clusterb-01:3306 cluster2 --recoveryMethod=clone
+```
+Connect to PRIMARY node of 2nd cluster and add 2nd & 3rd nodes to Replica Cluster
+```
+mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clusterb-02:3306 --recoveryMethod=clone
+mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clusterb-03:3306 --recoveryMethod=clone
+```
+## Add Read Replica
+Connect to Read Replica
+```
+
+```
