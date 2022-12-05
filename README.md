@@ -54,6 +54,9 @@ Connect to PRIMARY node of 2nd cluster and add 2nd & 3rd nodes to Replica Cluste
 ```
 mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clusterb-02:3306 --recoveryMethod=clone
 mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clusterb-03:3306 --recoveryMethod=clone
+
+mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@readreplica-01:3306 --recoveryMethod=clone
+mysqlsh gradmin@localhost:3306 -- cluster remove-instance gradmin@readreplica-01:3306 
 ```
 ## Add Read Replica
 Connect to Read Replica
@@ -63,5 +66,14 @@ change replication source to source_host='clusterb-01', source_port=3306, source
 SELECT asynchronous_connection_failover_add_source('channel1', 'clusterb-01', 3306, '',90);
 SELECT asynchronous_connection_failover_add_source('channel1', 'clusterb-02', 3306, '',80);
 SELECT asynchronous_connection_failover_add_source('channel1', 'clusterb-03', 3306, '',60);
+
+select * from mysql.replication_asynchronous_connection_failover;
+SELECT asynchronous_connection_failover_delete_managed('clusterset_replication','68b461cc-7430-11ed-92bb-0200170183e6');
+select * from mysql.replication_asynchronous_connection_failover;
+
+start replica for channel 'channel1';
+show replica status for channel 'channel1' \G
+
+set global super_read_only=on;
 ```
 
