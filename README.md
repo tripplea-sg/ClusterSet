@@ -58,5 +58,10 @@ mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clusterb-03:3306 
 ## Add Read Replica
 Connect to Read Replica
 ```
+change replication source to source_host='clusterb-01', source_port=3306, source_user='gradmin', source_password='Grpass#123', source_auto_position=1, get_master_public_key=1, source_ssl=1, source_connection_auto_failover=1, source_connect_retry=3, source_retry_count=3, source_delay=3600 for channel 'channel1';
 
+SELECT asynchronous_connection_failover_add_source('channel1', 'clusterb-01', 3306, '',90);
+SELECT asynchronous_connection_failover_add_source('channel1', 'clusterb-02', 3306, '',80);
+SELECT asynchronous_connection_failover_add_source('channel1', 'clusterb-03', 3306, '',60);
 ```
+
