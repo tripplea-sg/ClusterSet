@@ -32,3 +32,17 @@ sudo systemctl start mysqld
 ```
 Check /var/log/mysqld.log for temporary root password </br>
 Login to MySQL and change root password to Root#123. 
+## Configure Instance
+Run configure-instance against all instances
+```
+mysqlsh -- dba configure-instance { --host=127.0.0.1 --port=3306 --user=root --instance-password=Root#123 } --clusterAdmin=gradmin --clusterAdminPassword='Grpass#123' --interactive=false --restart=true
+```
+## Create InnoDB ClusterSet
+Login into 1st server and create InnoDB Cluster
+```
+mysqlsh -ugradmin -p"Grpass#123" -h::1 -- dba createCluster mycluster --consistency=BEFORE_ON_PRIMARY_FAILOVER
+mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clustera-02:3306 --recoveryMethod=clone
+mysqlsh gradmin@localhost:3306 -- cluster add-instance gradmin@clustera-03:3306 --recoveryMethod=clone
+
+mysqlsh gradmin@localhost:3306 -- cluster create-cluster-set clusterset
+```
